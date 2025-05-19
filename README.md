@@ -110,6 +110,7 @@ chmod 777 deployment.sh
 ```shell
 kubectl apply -f inspecktor-gadget/bpfstats.yaml -n gadget
 
+```
 
 
 ### Let's run the bpfstats gadget configure to produce metrics
