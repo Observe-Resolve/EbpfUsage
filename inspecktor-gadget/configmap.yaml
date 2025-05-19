@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: gadget
+    meta.helm.sh/release-namespace: gadget
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: gadget
+  namespace: gadget
+data:
+  config.yaml: |-
+    hook-mode: auto
+    fallback-pod-informer: true
+    events-buffer-length: 16384
+    containerd-socketpath: /run/containerd/containerd.sock
+    crio-socketpath: /run/crio/crio.sock
+    docker-socketpath: /run/docker.sock
+    podman-socketpath: /run/podman/podman.sock
+    operator:
+      ebpf:
+        enable-bpfstats: true
+      oci:
+        verify-image: true
+        allowed-gadgets:
+          []
+        disallow-pulling: false
+      otel-metrics:
+          exporters:
+            metric-exporter:
+              exporter: otlp-grpc
+              endpoint: "otel-collector.default.svc.cluster.local:4317"
+              insecure: true
+              temporality: delta
+              interval: 30s
+      otel-logs:
+          exporters:
+            my-log-exporter:
+              exporter: otlp-grpc
+              compression: gzip
+              endpoint: "otel-collector.default.svc.cluster.local:4317"
+              insecure: true

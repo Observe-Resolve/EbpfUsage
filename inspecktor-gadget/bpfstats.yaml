@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+immutable: true
+metadata:
+  namespace: gadget
+  name: gadget-id
+  annotations:
+    gadgetImage: bpfstats:latest
+  labels:
+    name: bpfstats
+    type: gadget-instance
+data:
+  operator.ebpf.all: "true"
+  operator.filter.filter: runcount>0
+  operator.oci.annotate: "bpfstats:logs.body='eBPF Program name' + progName + ' has runcount ' + string(runcount) + 'on node' + nodeName,bpfstats:logs.name=bpfstats,bpfstats:metrics.collect=true"
+  operator.otel-metrics.otel-metrics-name: 'bpfstats:bpfstats'
+  operator.otel-metrics.otel-metrics-exporter: "metric-exporter"
+  operator.otel-logs.otel-logs-exporter: my-log-exporter
+  operator.kubeManager.all-namespaces: "true"
+

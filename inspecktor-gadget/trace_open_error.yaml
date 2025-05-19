@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+immutable: true
+metadata:
+  namespace: gadget
+  name: traceopen-id
+  annotations:
+    gadgetImage: trace_open:latest
+  labels:
+    name: trace_open
+    type: gadget-instance
+data:
+  operator.filter.filter: fd == 0
+  operator.oci.annotate: "open:logs.name='trace_open', open:logs.body=‘Process ‘ + proc.comm + ' is returning the error ‘ + string(error_raw)"
+  operator.otel-logs.otel-logs-exporter: my-log-exporter
+  operator.kubeManager.all-namespaces: "true"
+
+
